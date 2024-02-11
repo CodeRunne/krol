@@ -1,6 +1,6 @@
 <template>
   <div class="w-[90%] lg:w-[70%] py-10 mx-auto">
-    <DataTable :columns="columns" :processes="processes" />
+    <DataTable :columns="columns" :processes="store.processes" />
   </div>
 </template>
 
@@ -8,15 +8,10 @@
   import { ref, onMounted } from 'vue'
   import { columns } from '@/components/processes/columns.js'
   import DataTable from '@/components/processes/data-table.vue'
-  import axios from 'axios'
+  import { useProcessStore } from '@/stores/process'
 
-  const processes = ref([])
-
+  const store = useProcessStore()
   onMounted(() => {
-    axios.get('http://localhost:4000/processes')
-      .then((response) => {
-        processes.value = response.data
-      })
-      .catch((error) => toast(error.data.error))
+    store.getProcesses()
   })
 </script>
